@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "NamaskarBhar Form Assistant",
+  "version": "0.2.0",
+  "description": "User-controlled form filling for supported Indian registration portals.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "https://udyamregistration.gov.in/*",
+    "https://namaskarbhar.shop/*",
+    "https://indian-docs-desk.vercel.app/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_title": "NamaskarBhar Form Assistant",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://namaskarbhar.shop/*", "https://indian-docs-desk.vercel.app/*"],
+      "js": ["app-bridge.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://udyamregistration.gov.in/*"],
+      "js": ["portal-fill.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
