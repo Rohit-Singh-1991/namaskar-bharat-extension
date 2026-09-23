@@ -1,51 +1,37 @@
 # Namaskar Bharat Form Assistant (Chrome / Edge, Manifest V3)
 
-A user-controlled extension for transferring prepared Namaskar Bharat application data into supported official registration portals.
-
-**Current coverage:** Udyam is the only official portal adapter enabled in this release. The shared matcher is designed for reuse across registrations, but a portal must be explicitly registered before autofill runs there.
+A user-triggered helper that transfers the current Namaskar Bharat application into the extension and attempts to populate matching fields on explicitly approved official portal hosts. The shared matcher supports common text, date, number, select, radio and checkbox controls. Each portal may need selector/alias tuning after live testing; this is heuristic autofill, not a guarantee of compatibility.
 
 ## Install / update
 
-1. Download this repository as ZIP and extract it (or update the existing extracted folder with the latest files).
+1. Download this repository as ZIP and extract it.
 2. Open `chrome://extensions` (Edge: `edge://extensions`).
 3. Enable **Developer mode**.
-4. Click **Load unpacked** and select the extracted folder containing `manifest.json`. For an existing install, click **Reload**.
-5. Pin **Namaskar Bharat Form Assistant**.
-6. Refresh any already-open Namaskar Bharat and official portal tabs.
+4. Click **Load unpacked** and select the extracted folder containing `manifest.json` (or click **Reload** on the existing extension).
+5. Refresh the Namaskar Bharat application tab and the official portal tab.
 
-## Udyam workflow
+## Test any supported application
 
-1. In Namaskar Bharat, complete the Udyam guided form through **Review your details**.
-2. Click **Open Udyam portal**.
-3. On the Namaskar Bharat application page, click **Send saved details to Form Assistant**.
-4. Open the extension popup on the official Udyam tab and choose **Fill supported fields on this page**.
-5. Review every populated field and continue manually.
-6. OTP, CAPTCHA, consent/declarations, payment, verification and final submission remain user-controlled.
+1. Open `https://namaskarbharat.shop/` and sign in.
+2. Open a service/application, complete its guided form, and go to **Review your details**.
+3. Click **Open [portal]**. On the Namaskar Bharat application page, click **Send saved details to Form Assistant**.
+4. Switch to the official portal tab and open the extension popup.
+5. Click **Fill supported fields on this page**. Review every field carefully; use the unmatched-field report to identify gaps.
+6. Repeat with other service cards. The same matcher is shared across approved hosts; improvements to matching/event dispatch apply globally. Portal-specific aliases are centralized in `portal-fill.js`.
 
-## Shared autofill architecture
+## Approved portal roots
 
-- `portal-fill.js` contains the common field discovery, alias matching, select/input value setting, and framework-compatible input/change event dispatch.
-- Portal-specific field aliases are centralized in the `ADAPTERS` registry in that file. Add an adapter keyed by the exact official portal hostname to support another portal.
-- Add that portal's exact HTTPS origin to the `portal-fill.js` content-script `matches` list in `manifest.json`. Keep the approved-host guard; do not inject the extension on arbitrary sites.
-- Generic canonical field-key matching is a fallback; portal-specific aliases should be added for fields whose official labels/IDs differ from the app's keys.
-- Test each portal adapter against its live form. Portal markup and multi-step forms can change; unmatched fields must be reviewed and completed manually.
+The current host allowlist includes UIDAI, GST, Udyam, ECI Voter Services, NSDL, UTIITSL, FSSAI, Parivahan, Passport Seva, Income Tax, MCA, EPFO, e-Shram, GeM, Startup India, ICEGATE, DGFT, CRS and India.gov.in subdomains. Only explicitly listed roots are handled by the content script; a listed host may still require portal-specific fixes. Review `manifest.json` for exact match patterns.
 
-A fix to the shared matcher in `portal-fill.js` benefits every registered adapter. Portal-specific alias/host configuration is still required where government portals use different field names or domains.
+## Guardrails / limitations
 
-## Delete saved registration
+- Udyam is the only portal with specialized aliases and OTP-request assistance. Other listed portals use shared/common aliases and may need tuning.
+- OTP values are never read, stored or auto-entered. OTP-request assistance is user-confirmed and limited to Udyam.
+- No CAPTCHA, payment, consent/declaration, verification or final-submission automation.
+- No credentials or cookies are read. Form data is stored locally in this browser extension; it is not sent to a remote server by this extension.
+- Do not use real Aadhaar, PAN, bank or other sensitive data for initial testing. Start with dummy/test values where the portal permits them.
+- Government portals may change their markup, use inaccessible embedded frames, custom widgets, or require manual entry. Always review before continuing.
 
-The extension keeps the prepared form in `chrome.storage.local` on this browser only. Use **Delete saved application** in the extension popup to permanently remove that locally saved prepared form.
+## Delete locally saved form
 
-## Guardrails
-
-- OTP values are never read, stored or auto-entered.
-- No CAPTCHA, payment, consent/declaration or final submission automation.
-- No credentials or cookies are read.
-- No application data is sent to a remote server by the extension.
-- Autofill is user-triggered. Always review populated values before proceeding.
-
-## Supported app origins
-
-- `https://namaskarbharat.shop` (canonical)
-- `https://namaskarbhar.shop` (legacy)
-- `https://indian-docs-desk.vercel.app` (legacy deployment)
+Use **Delete saved registration** in the extension popup to remove the prepared form from this browser.
