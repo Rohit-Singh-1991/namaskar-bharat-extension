@@ -1,76 +1,31 @@
 {
   "manifest_version": 3,
   "name": "Namaskar Bharat Form Assistant",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "User-controlled form filling for approved Indian registration portals.",
   "permissions": ["storage", "activeTab"],
   "host_permissions": [
-    "https://namaskarbharat.shop/*",
-    "https://namaskarbhar.shop/*",
-    "https://indian-docs-desk.vercel.app/*",
-    "https://*.uidai.gov.in/*",
-    "https://reg.gst.gov.in/*",
-    "https://udyamregistration.gov.in/*",
-    "https://voters.eci.gov.in/*",
-    "https://*.nsdl.com/*",
-    "https://*.utiitsl.com/*",
-    "https://foscos.fssai.gov.in/*",
-    "https://*.fssai.gov.in/*",
-    "https://*.parivahan.gov.in/*",
-    "https://*.passportindia.gov.in/*",
-    "https://*.incometax.gov.in/*",
-    "https://*.mca.gov.in/*",
-    "https://*.epfindia.gov.in/*",
-    "https://*.eshram.gov.in/*",
-    "https://*.gem.gov.in/*",
-    "https://*.startupindia.gov.in/*",
-    "https://*.icegate.gov.in/*",
-    "https://*.dgft.gov.in/*",
-    "https://*.crsorgi.gov.in/*",
-    "https://*.india.gov.in/*",
-    "https://*.nic.in/*"
+    "https://namaskarbharat.shop/*", "https://namaskarbhar.shop/*", "https://indian-docs-desk.vercel.app/*",
+    "https://*.uidai.gov.in/*", "https://reg.gst.gov.in/*", "https://udyamregistration.gov.in/*",
+    "https://voters.eci.gov.in/*", "https://*.nsdl.com/*", "https://*.utiitsl.com/*",
+    "https://foscos.fssai.gov.in/*", "https://*.fssai.gov.in/*", "https://*.parivahan.gov.in/*",
+    "https://*.passportindia.gov.in/*", "https://*.incometax.gov.in/*", "https://*.mca.gov.in/*",
+    "https://*.epfindia.gov.in/*", "https://*.eshram.gov.in/*", "https://*.gem.gov.in/*",
+    "https://*.startupindia.gov.in/*", "https://*.icegate.gov.in/*", "https://*.dgft.gov.in/*",
+    "https://*.crsorgi.gov.in/*", "https://*.india.gov.in/*"
   ],
   "background": { "service_worker": "background.js" },
-  "action": {
-    "default_title": "Namaskar Bharat Form Assistant",
-    "default_popup": "popup.html"
-  },
+  "action": { "default_title": "Namaskar Bharat Form Assistant", "default_popup": "popup.html" },
   "content_scripts": [
-    {
-      "matches": [
-        "https://namaskarbharat.shop/*",
-        "https://namaskarbhar.shop/*",
-        "https://indian-docs-desk.vercel.app/*"
-      ],
-      "js": ["app-bridge.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": [
-        "https://*.uidai.gov.in/*",
-        "https://reg.gst.gov.in/*",
-        "https://udyamregistration.gov.in/*",
-        "https://voters.eci.gov.in/*",
-        "https://*.nsdl.com/*",
-        "https://*.utiitsl.com/*",
-        "https://foscos.fssai.gov.in/*",
-        "https://*.fssai.gov.in/*",
-        "https://*.parivahan.gov.in/*",
-        "https://*.passportindia.gov.in/*",
-        "https://*.incometax.gov.in/*",
-        "https://*.mca.gov.in/*",
-        "https://*.epfindia.gov.in/*",
-        "https://*.eshram.gov.in/*",
-        "https://*.gem.gov.in/*",
-        "https://*.startupindia.gov.in/*",
-        "https://*.icegate.gov.in/*",
-        "https://*.dgft.gov.in/*",
-        "https://*.crsorgi.gov.in/*",
-        "https://*.india.gov.in/*",
-        "https://*.nic.in/*"
-      ],
-      "js": ["portal-fill.js"],
-      "run_at": "document_idle"
-    }
+    { "matches": ["https://namaskarbharat.shop/*", "https://namaskarbhar.shop/*", "https://indian-docs-desk.vercel.app/*"], "js": ["app-bridge.js"], "run_at": "document_idle" },
+    { "matches": [
+      "https://*.uidai.gov.in/*", "https://reg.gst.gov.in/*", "https://udyamregistration.gov.in/*",
+      "https://voters.eci.gov.in/*", "https://*.nsdl.com/*", "https://*.utiitsl.com/*",
+      "https://foscos.fssai.gov.in/*", "https://*.fssai.gov.in/*", "https://*.parivahan.gov.in/*",
+      "https://*.passportindia.gov.in/*", "https://*.incometax.gov.in/*", "https://*.mca.gov.in/*",
+      "https://*.epfindia.gov.in/*", "https://*.eshram.gov.in/*", "https://*.gem.gov.in/*",
+      "https://*.startupindia.gov.in/*", "https://*.icegate.gov.in/*", "https://*.dgft.gov.in/*",
+      "https://*.crsorgi.gov.in/*", "https://*.india.gov.in/*"
+    ], "js": ["portal-fill.js"], "run_at": "document_idle" }
   ]
 }
