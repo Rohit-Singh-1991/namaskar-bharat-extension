@@ -27,6 +27,6 @@
       "https://*.epfindia.gov.in/*", "https://*.eshram.gov.in/*", "https://*.gem.gov.in/*",
       "https://*.startupindia.gov.in/*", "https://*.icegate.gov.in/*", "https://*.dgft.gov.in/*",
       "https://*.crsorgi.gov.in/*", "https://*.india.gov.in/*"
-    ], "js": ["portal-fill.js"], "run_at": "document_idle" }
+    ], "js": ["portal-fill.js", "profile-fill.js"], "run_at": "document_idle" }
   ]
 }
