@@ -7,7 +7,6 @@
   ]);
   if (!ALLOWED_ORIGINS.has(location.origin)) return;
 
-  // Generic key supports all services; legacy key keeps older Udyam app builds working.
   const STORAGE_KEYS = ["namaskarBharFormAutofill", "namaskarBharUdyamAutofill"];
   const HOST_ID = "nb-form-assistant-host";
   let lastPath = location.pathname;
@@ -88,7 +87,7 @@
     button.addEventListener("click", () => {
       const record = readPrepared();
       if (!record) {
-        status.textContent = "No prepared details found. Return to this application’s review page, click Open Udyam Registration once, wait for the ‘details prepared’ confirmation, then click Send saved details again.";
+        status.textContent = "No prepared details found. Return to this application’s review page, click Open Portal once, wait for confirmation, then click Send saved details again.";
         return;
       }
       record.form = safeForm(record.form);
@@ -100,16 +99,23 @@
       button.disabled = true;
       button.textContent = "Sending…";
       status.textContent = "Sending the prepared application to this browser extension…";
-      chrome.runtime.sendMessage({ type: "NB_STORE_FORM", record }, (response) => {
-        const runtimeError = chrome.runtime.lastError;
+      try {
+        chrome.runtime.sendMessage({ type: "NB_STORE_FORM", record }, (response) => {
+          const runtimeError = chrome.runtime.lastError;
+          button.disabled = false;
+          button.textContent = "Send saved details to Form Assistant";
+          if (!runtimeError && response?.ok) {
+            status.textContent = `Success — ${Object.keys(record.form).length} fields saved for ${record.serviceTitle}. Now open the matching official portal tab and use the extension.`;
+          } else {
+            const reason = runtimeError?.message || response?.message;
+            status.textContent = `Transfer failed${reason ? `: ${reason}` : ". Extension did not confirm receipt"}. Check chrome://extensions, reload the extension, refresh this page, and retry.`;
+          }
+        });
+      } catch (error) {
         button.disabled = false;
         button.textContent = "Send saved details to Form Assistant";
-        if (!runtimeError && response?.ok) {
-          status.textContent = `Success — ${Object.keys(record.form).length} fields saved for ${record.serviceTitle}. Now open the matching official portal tab and use the extension.`;
-        } else {
-          status.textContent = "Transfer failed. Open chrome://extensions, reload Namaskar Bharat Form Assistant, refresh this application page, and try again.";
-        }
-      });
+        status.textContent = `Transfer failed: ${error?.message || "Extension messaging is unavailable"}. Reload the extension and refresh this page.`;
+      }
     });
 
     panel.append(heading, status, button);
