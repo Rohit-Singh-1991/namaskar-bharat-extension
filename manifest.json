@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Namaskar Bharat Form Assistant",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "User-controlled form filling and reusable personal profile for approved Indian registration portals.",
   "permissions": ["storage", "activeTab"],
   "host_permissions": [
@@ -27,6 +27,6 @@
       "https://*.epfindia.gov.in/*", "https://*.eshram.gov.in/*", "https://*.gem.gov.in/*",
       "https://*.startupindia.gov.in/*", "https://*.icegate.gov.in/*", "https://*.dgft.gov.in/*",
       "https://*.crsorgi.gov.in/*", "https://*.india.gov.in/*"
-    ], "js": ["portal-fill.js", "profile-fill.js"], "run_at": "document_idle" }
+    ], "js": ["portal-fill.js", "profile-fill.js", "udyam-post-otp.js"], "run_at": "document_idle" }
   ]
 }
