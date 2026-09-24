@@ -7,7 +7,7 @@
   ]);
   if (!ALLOWED_ORIGINS.has(location.origin)) return;
 
-  // Generic key is used for every service; retain the legacy Udyam key for older app builds.
+  // Generic key supports all services; legacy key keeps older Udyam app builds working.
   const STORAGE_KEYS = ["namaskarBharFormAutofill", "namaskarBharUdyamAutofill"];
   const HOST_ID = "nb-form-assistant-host";
   let lastPath = location.pathname;
@@ -15,17 +15,20 @@
   const readPrepared = () => {
     for (const key of STORAGE_KEYS) {
       try {
-        const form = JSON.parse(localStorage.getItem(key) || "null");
+        const stored = JSON.parse(localStorage.getItem(key) || "null");
+        const form = stored?.form && typeof stored.form === "object" ? stored.form : stored;
         if (form && typeof form === "object" && !Array.isArray(form) && Object.keys(form).length) {
           const serviceId = decodeURIComponent(location.pathname.split("/").filter(Boolean).pop() || "");
           return {
-            serviceId: serviceId || "registration",
-            serviceTitle: document.querySelector("h1")?.textContent?.trim() || "Registration application",
-            preparedAt: new Date().toISOString(),
+            serviceId: stored?.serviceId || serviceId || "registration",
+            serviceTitle: stored?.serviceTitle || document.querySelector("h1")?.textContent?.trim() || "Registration application",
+            preparedAt: stored?.preparedAt || new Date().toISOString(),
             form,
           };
         }
-      } catch {}
+      } catch {
+        // Ignore malformed/stale values and try the alternate supported key.
+      }
     }
     return null;
   };
@@ -70,7 +73,7 @@
 
     const status = document.createElement("div");
     status.setAttribute("role", "status");
-    status.textContent = "On your application review page, prepare your details, then send them here.";
+    status.textContent = "On the application review page, click Open Portal once to prepare details, then send them here.";
     Object.assign(status.style, { marginBottom: "10px", color: "#475569" });
 
     const button = document.createElement("button");
@@ -85,26 +88,26 @@
     button.addEventListener("click", () => {
       const record = readPrepared();
       if (!record) {
-        status.textContent = "No saved form found. Return to your application review page, prepare the details, and retry.";
+        status.textContent = "No prepared details found. Return to this application’s review page, click Open Udyam Registration once, wait for the ‘details prepared’ confirmation, then click Send saved details again.";
         return;
       }
       record.form = safeForm(record.form);
       if (!Object.keys(record.form).length) {
-        status.textContent = "No supported fields found. Check your saved review details and retry.";
+        status.textContent = "Saved data was found, but it has no supported fields. Recheck your application details and prepare them again.";
         return;
       }
 
       button.disabled = true;
       button.textContent = "Sending…";
-      status.textContent = "Saving the selected application in this browser extension…";
+      status.textContent = "Sending the prepared application to this browser extension…";
       chrome.runtime.sendMessage({ type: "NB_STORE_FORM", record }, (response) => {
         const runtimeError = chrome.runtime.lastError;
         button.disabled = false;
         button.textContent = "Send saved details to Form Assistant";
         if (!runtimeError && response?.ok) {
-          status.textContent = `Success — ${Object.keys(record.form).length} fields saved for ${record.serviceTitle}. Open the extension on the matching official portal tab.`;
+          status.textContent = `Success — ${Object.keys(record.form).length} fields saved for ${record.serviceTitle}. Now open the matching official portal tab and use the extension.`;
         } else {
-          status.textContent = "Transfer failed. Reload the extension and this page, then try again.";
+          status.textContent = "Transfer failed. Open chrome://extensions, reload Namaskar Bharat Form Assistant, refresh this application page, and try again.";
         }
       });
     });
