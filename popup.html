@@ -1,30 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Namaskar Bharat Form Assistant</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Namaskar Bharat Form Assistant</title>
 <style>
-body{font:14px system-ui,sans-serif;width:320px;margin:0;padding:16px;color:#172033}
-h1{font-size:17px;margin:0 0 8px}
-.muted{color:#667085;font-size:12px;line-height:1.45}
-.status{padding:10px;border-radius:8px;background:#f3f5f7;margin:12px 0;overflow-wrap:anywhere}
-.btn{width:100%;padding:10px;border:0;border-radius:7px;margin:5px 0;cursor:pointer;font-weight:600}
-.primary{background:#167c45;color:white}
-.secondary{background:#edf0f4;color:#172033}
-.request{background:#e7f1ff;color:#174ea6;border:1px solid #9bbcf4}
-.danger{background:#fff0f0;color:#a61b1b;border:1px solid #efb1b1}
-.warning{color:#9f2d2d}
-</style>
-</head>
-<body>
-<h1>Namaskar Bharat Form Assistant</h1>
-<p class="muted">Prepared application values are stored locally in this browser. Generic autofill is available on approved portal hosts. Review every field before continuing.</p>
-<div class="status" id="status">Checking saved application…</div>
-<button class="btn primary" id="fill">Fill supported fields on this page</button>
+body{font:14px system-ui,sans-serif;width:320px;margin:0;padding:16px;color:#172033}h1{font-size:17px;margin:0 0 8px}.muted{color:#667085;font-size:12px;line-height:1.45}.status{padding:10px;border-radius:8px;background:#f3f5f7;margin:12px 0;overflow-wrap:anywhere}.btn{width:100%;padding:10px;border:0;border-radius:7px;margin:5px 0;cursor:pointer;font-weight:600}.primary{background:#167c45;color:white}.secondary{background:#edf0f4;color:#172033}.request{background:#e7f1ff;color:#174ea6;border:1px solid #9bbcf4}.danger{background:#fff0f0;color:#a61b1b;border:1px solid #efb1b1}.warning{color:#9f2d2d}
+</style></head><body>
+<h1>Namaskar Bharat Form Assistant</h1><p class="muted">Saved profile and prepared application data stay in this browser. Autofill works on supported official portal hosts. Review every field before continuing.</p>
+<div class="status" id="status">Checking saved data…</div>
+<button class="btn primary" id="fill">Fill prepared application</button>
+<button class="btn request" id="fillProfile">Fill personal profile on this page</button>
+<button class="btn secondary" id="manageProfile">Manage / customize personal data</button>
 <button class="btn request" id="fillOtp">Udyam: fill Aadhaar/name + request OTP</button>
 <button class="btn danger" id="clear">Delete saved application</button>
-<p class="muted warning">OTP assistance is Udyam-only and requires your confirmation. The extension cannot read or enter OTPs. Never automate OTP verification, CAPTCHA, consent, payment, or final submission.</p>
-<script src="popup.js"></script>
-</body>
-</html>
+<p class="muted warning">Personal profile autofill is user-triggered and limited to supported HTTPS portal hosts. It does not scrape data from websites. OTPs, CAPTCHA, consent, payment, and final submission remain manual.</p>
+<script src="popup.js"></script></body></html>
